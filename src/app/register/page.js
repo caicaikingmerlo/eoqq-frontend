@@ -11,7 +11,6 @@ export default function Register() {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
     try {
       const res = await fetch('http://localhost:3001/user/create', {
         method: 'POST',

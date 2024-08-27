@@ -1,19 +1,20 @@
 "use client";
-
 import { useState } from 'react';
 import Link from 'next/link';
+import * as jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+// import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
     const res = await fetch('http://localhost:3001/auth/login', {
       method: 'POST',
       headers: {
@@ -24,13 +25,14 @@ export default function Login() {
         password,
       }),
     });
-
     const data = await res.json();
-
+    const API_KEY = "asd";
     if (res.ok) {
       setSuccessMessage('Login successful!');
-      // Armazenar o token JWT no localStorage
-      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('token',data.token);
+      // const decoded = jwt.verify(localStorage.getItem('token'),API_KEY);
+      // console.log(decoded)
+      window.location = 'http://localhost:3000/use'
     } else {
       setErrorMessage(data.message || 'Login failed.');
     }
